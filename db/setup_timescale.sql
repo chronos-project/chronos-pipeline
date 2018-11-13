@@ -4,8 +4,8 @@ CREATE TABLE link_clicks (
   id SERIAL NOT NULL,
   link_text TEXT,
   target_url TEXT NOT NULL,
-  time TIMESTAMP NOT NULL DEFAULT NOW(),
-  client_time TIMESTAMP NOT NULL,
+  time TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  client_time TIMESTAMPTZ NOT NULL,
   metadata JSONB NOT NULL);
 
 CREATE TABLE clicks (
@@ -14,43 +14,39 @@ CREATE TABLE clicks (
   buttons INT NOT NULL,
   x INT NOT NULL,
   y INT NOT NULL,
-  time TIMESTAMP NOT NULL DEFAULT NOW(),
-  client_time TIMESTAMP NOT NULL,
+  time TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  client_time TIMESTAMPTZ NOT NULL,
   metadata JSONB NOT NULL);
 
 CREATE TABLE pageviews (
   id SERIAL NOT NULL,
   url TEXT NOT NULL,
   title TEXT NOT NULL,
-  time TIMESTAMP NOT NULL DEFAULT NOW(),
-  client_time TIMESTAMP NOT NULL,
+  time TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  client_time TIMESTAMPTZ NOT NULL,
   metadata JSONB NOT NULL);
-);
 
 CREATE TABLE mouse_moves (
   id SERIAL NOT NULL,
   x INT NOT NULL,
   y INT NOT NULL,
-  time TIMESTAMP NOT NULL DEFAULT NOW(),
-  client_time TIMESTAMP NOT NULL,
+  time TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  client_time TIMESTAMPTZ NOT NULL,
   metadata JSONB NOT NULL);
-);
 
 CREATE TABLE key_presses (
   id SERIAL NOT NULL,
   key VARCHAR(1) NOT NULL,
-  time TIMESTAMP NOT NULL DEFAULT NOW(),
-  client_time TIMESTAMP NOT NULL,
+  time TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  client_time TIMESTAMPTZ NOT NULL,
   metadata JSONB NOT NULL);
-);
 
 CREATE TABLE form_submissions (
   id SERIAL NOT NULL,
   data JSONB NOT NULL,
-  time TIMESTAMP NOT NULL DEFAULT NOW(),
-  client_time TIMESTAMP NOT NULL,
+  time TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  client_time TIMESTAMPTZ NOT NULL,
   metadata JSONB NOT NULL);
-);
 
 SELECT create_hypertable('link_clicks', 'time');
 SELECT create_hypertable('clicks', 'time');
