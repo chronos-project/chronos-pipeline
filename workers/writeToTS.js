@@ -43,6 +43,15 @@ const writeToDB = (msg) => {
     client.query(text, values, (err, res) => {
       console.log(err ? err.stack : res.rows[0]);
     });
+  } else if (eType === 'key_presses') {
+    let { key } = json;
+
+    text = 'INSERT INTO key_presses(key, local_time, metadata) VALUES ($1, $2, $3) RETURNING *';
+    values = [key, timestamp, metadata];
+
+    client.query(text, values, (err, res) => {
+      console.log(err ? err.stack : res.rows[0]);
+    });
   }
 }
 
