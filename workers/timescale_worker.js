@@ -5,7 +5,7 @@ const writeToDB = require('./writeToTS');
 
 
 
-const events = ['link_clicks'];
+const events = ['link_clicks', 'clicks'];
 // 'clicks', 'mouse_moves', 'key_presses', 'form_submissions', 'pageviews'];
 
 amqp.connect('amqp://localhost').then(conn => {
