@@ -52,6 +52,15 @@ const writeToDB = (msg) => {
     client.query(text, values, (err, res) => {
       console.log(err ? err.stack : res.rows[0]);
     });
+  } else if (eType === 'pageviews') {
+    let { url, title } = json;
+
+    text = 'INSERT INTO pageviews(url, title, local_time, metadata) VALUES ($1, $2, $3, $4) RETURNING *';
+    values = [url, title, timestamp, metadata];
+
+    client.query(text, values, (err, res) => {
+      console.log(err ? err.stack : res.rows[0]);
+    });
   }
 }
 
