@@ -3,7 +3,7 @@ const all = require('bluebird').all;
 const basename = require('path').basename;
 const writeToDB = require('./writeToTS');
 
-const events = ['link_clicks', 'clicks', 'mouse_moves', 'key_presses', 'pageviews'];
+const events = ['link_clicks', 'clicks', 'mouse_moves', 'key_presses', 'pageviews', 'form_submissions'];
 // 'form_submissions'];
 
 amqp.connect('amqp://localhost').then(conn => {

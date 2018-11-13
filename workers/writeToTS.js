@@ -61,6 +61,15 @@ const writeToDB = (msg) => {
     client.query(text, values, (err, res) => {
       console.log(err ? err.stack : res.rows[0]);
     });
+  } else if (eType === 'form_submissions') {
+    let { data } = json;
+
+    text = 'INSERT INTO form_submissions(data, local_time, metadata) VALUES ($1, $2, $3) RETURNING *';
+    values = [data, timestamp, metadata];
+
+    client.query(text, values, (err, res) => {
+      console.log(err ? err.stack : res.rows[0]);
+    });
   }
 }
 
