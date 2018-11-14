@@ -1,5 +1,4 @@
 const { Client } = require('pg');
-const moment = require('moment');
 const INSERT = require('./pipelinedb_queries');
 
 const client = new Client({
@@ -11,7 +10,7 @@ const client = new Client({
 
 client.connect();
 
-const writeToPL = (msg) => {
+const writeToDB = (msg) => {
   const json = JSON.parse(msg.content);
   let { eType, timestamp, metadata } = json;
   timestamp /= 1000;
@@ -49,4 +48,4 @@ const writeToPL = (msg) => {
   })
 }
 
-module.exports = writeToPL;
+module.exports = writeToDB;
