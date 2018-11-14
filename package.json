@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
-    "start-ts": "PGDATABASE=chronos_ts & node workers/worker ts",
-    "start-pl": "PGDATABASE=chronos_pl & node workers/worker pl"
+    "start-ts": "PGDATABASE=chronos_ts node workers/worker",
+    "start-pl": "PGDATABASE=chronos_pl node workers/worker"
   },
   "dependencies": {
     "amqplib": "^0.5.2",
