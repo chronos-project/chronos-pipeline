@@ -1,14 +1,13 @@
 const { Client } = require('pg');
-const INSERT = require('./pipelinedb_queries');
-
 const client = new Client({
-  user: 'sasha',
+  user: 'user',
   host: 'localhost',
-  database: 'sasha',
+  database: 'chronos_pl',
   port: '5432',
 });
-
 client.connect();
+
+const INSERT = require('./pipelinedb_queries');
 
 const writeToDB = (msg) => {
   const json = JSON.parse(msg.content);

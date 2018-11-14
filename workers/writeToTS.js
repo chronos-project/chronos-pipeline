@@ -1,6 +1,6 @@
 const { Client } = require('pg');
 const client = new Client({
-  user: 'nick',
+  user: 'user',
   host: 'localhost',
   database: 'chronos_ts',
   port: '5432',
