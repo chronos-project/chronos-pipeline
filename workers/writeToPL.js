@@ -11,7 +11,7 @@ const client = new Client({
 
 client.connect();
 
-const addToPL = (msg) => {
+const writeToPL = (msg) => {
   const json = JSON.parse(msg.content);
   let { eType, timestamp, metadata } = json;
   timestamp /= 1000;
@@ -49,4 +49,4 @@ const addToPL = (msg) => {
   })
 }
 
-module.exports = addToPL;
+module.exports = writeToPL;

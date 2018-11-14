@@ -1,7 +1,7 @@
 var amqp = require('amqplib');
 var all = require('bluebird').all;
 var basename = require('path').basename;
-var writeToPL = require('./addToPL');
+var writeToPL = require('./writeToPL');
 
 const events = ['clicks', 'link_clicks', 'key_press', 'mouse_moves', 'pageview', 'form_submissions'];
 
