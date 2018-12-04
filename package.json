@@ -23,7 +23,6 @@
     "pg": "^7.6.0",
     "pg-hstore": "^2.3.2",
     "sequelize": "^4.41.0",
-    "sequelize-kafka-connect": "^3.6.0",
     "sinek": "^6.23.4"
   }
 }
