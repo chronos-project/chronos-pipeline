@@ -23,11 +23,12 @@ router.get('/events', function(req, res, next) {
 
 /* Tracker API Endpoint */
 router.post('/events', (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   const json = req.body;
 
   try {
     producer.buffer(topic, undefined, { json }, compressionType);
-
     res.send(JSON.stringify({"success": true}));
   } catch (e) {
     res.send(JSON.stringify({
