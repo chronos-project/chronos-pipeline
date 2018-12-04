@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const client = require('../connection');
 
 /* Kafka Producer Configuration */
 const { Producer } = require('sinek');
