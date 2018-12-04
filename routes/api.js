@@ -25,9 +25,13 @@ router.post('/events', (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   const json = req.body;
+  const { events, metadata } = json;
 
   try {
-    producer.buffer(topic, undefined, { json }, compressionType);
+    events.forEach(event => {
+      event.metadata = metadata;
+      producer.buffer(topic, undefined, { json: event }, compressionType);
+    });
     res.send(JSON.stringify({"success": true}));
   } catch (e) {
     res.send(JSON.stringify({
