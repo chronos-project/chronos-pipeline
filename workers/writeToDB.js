@@ -1,5 +1,12 @@
-const client = require('./client');
+const { Client } = require('pg');
+const config = require('./client');
 const INSERT = require('./queries');
+const tsConfig = { database: 'chronos_ts', ...config }
+const plConfig = { database: 'chronos_pl', ...config };
+const timescale = new Client(tsConfig);
+const pipeline = new Client(plConfig);
+timescale.connect();
+pipeline.connect();
 
 const writeToDB = (msg) => {
   const json = JSON.parse(msg.value)['json'];
@@ -35,7 +42,7 @@ const writeToDB = (msg) => {
     values = [data, timestamp, metadata];
   }
 
-  client.query(text, values, (err, res) => {
+  timescale.query(text, values, (err, res) => {
     console.log(err ? err.stack : res.rows[0]);
   });
 }
