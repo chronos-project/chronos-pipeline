@@ -1,8 +1,17 @@
-const client = require('./client');
+const { Client } = require('pg');
+const config = {
+  user: 'postgres',
+  host: 'localhost',
+  port: '5432',
+};
 const INSERT = require('./queries');
+const timescale = new Client({ database: 'chronos_ts', ...config });
+const pipeline = new Client({ database: 'chronos_pl', ...config });
 
-const writeToDB = (msg) => {
-  const json = JSON.parse(msg.content);
+timescale.connect();
+pipeline.connect();
+
+const writeToDB = (json) => {
   let { eType, timestamp, metadata } = json;
   timestamp /= 1000;
   let text;
@@ -26,6 +35,7 @@ const writeToDB = (msg) => {
     values = [key, timestamp, metadata];
   } else if (eType === 'pageviews') {
     let { url, title } = json;
+    // console.log(url, title);
     text = INSERT.pageview;
     values = [url, title, timestamp, metadata];
   } else if (eType === 'form_submissions') {
@@ -34,7 +44,7 @@ const writeToDB = (msg) => {
     values = [data, timestamp, metadata];
   }
 
-  client.query(text, values, (err, res) => {
+  timescale.query(text, values, (err, res) => {
     console.log(err ? err.stack : res.rows[0]);
   });
 }
