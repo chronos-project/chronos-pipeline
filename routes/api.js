@@ -5,7 +5,7 @@ const router = express.Router();
 const { Producer } = require('sinek');
 const kafkaConfig = require('../kafkaConfig');
 const partitions = 6;
-const compressionType = 0; // no compression
+const compressionType = 2; // snappy compression
 const topic = 'events';
 const producer = new Producer(kafkaConfig, topic, partitions);
 
@@ -26,15 +26,9 @@ router.post('/events', (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   const json = req.body;
-  const { events, metadata } = json;
-
-  console.log(events.length);
 
   try {
-    events.forEach(event => {
-      event.metadata = metadata;
-      producer.buffer(topic, undefined, { json: event }, compressionType);
-    });
+    producer.buffer(topic, undefined, { json }, compressionType);
     res.send(JSON.stringify({"success": true}));
   } catch (e) {
     res.send(JSON.stringify({
