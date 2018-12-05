@@ -2,7 +2,7 @@ const client = require('./client');
 const INSERT = require('./queries');
 
 const writeToDB = (msg) => {
-  const json = JSON.parse(msg.content);
+  const json = JSON.parse(msg.value)['json'];
   let { eType, timestamp, metadata } = json;
   timestamp /= 1000;
   let text;
@@ -26,6 +26,7 @@ const writeToDB = (msg) => {
     values = [key, timestamp, metadata];
   } else if (eType === 'pageviews') {
     let { url, title } = json;
+    // console.log(url, title);
     text = INSERT.pageview;
     values = [url, title, timestamp, metadata];
   } else if (eType === 'form_submissions') {

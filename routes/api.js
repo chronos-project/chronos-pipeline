@@ -11,7 +11,7 @@ const producer = new Producer(kafkaConfig, topic, partitions);
 
 producer.connect();
 producer.on('error', error => console.log(error));
-process.on('warning', e => console.warn(e.stack));
+// process.on('warning', e => console.warn(e.stack));
 
 /* GET users listing. */
 router.get('/events', function(req, res, next) {

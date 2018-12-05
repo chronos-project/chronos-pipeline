@@ -10,8 +10,8 @@ const events = ['link_clicks', 'clicks', 'mouse_moves', 'key_presses', 'pageview
 
 consumer.connect(withBackpressure).then(_ => {
   consumer.consume((message, callback) => {
-    console.log(typeof message.value);
-    console.log(message);
+    // console.log(message);
+    writeToDB(message);
     callback();
   });
 });
