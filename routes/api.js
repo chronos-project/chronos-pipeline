@@ -11,6 +11,7 @@ const producer = new Producer(kafkaConfig, topic, partitions);
 
 producer.connect();
 producer.on('error', error => console.log(error));
+process.on('warning', e => console.warn(e.stack));
 
 /* GET users listing. */
 router.get('/events', function(req, res, next) {
@@ -26,6 +27,8 @@ router.post('/events', (req, res) => {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   const json = req.body;
   const { events, metadata } = json;
+
+  console.log(events.length);
 
   try {
     events.forEach(event => {
