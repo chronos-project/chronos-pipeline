@@ -10,8 +10,14 @@ const events = ['link_clicks', 'clicks', 'mouse_moves', 'key_presses', 'pageview
 
 consumer.connect(withBackpressure).then(_ => {
   consumer.consume((message, callback) => {
-    // console.log(message);
-    writeToDB(message);
+    const json = JSON.parse(message.value)['json'];
+    const { events, metadata } = json;
+
+    events.forEach(event => {
+      event.metadata = metadata;
+      writeToDB(event);
+    });
+
     callback();
   });
 });

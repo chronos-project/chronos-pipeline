@@ -1,15 +1,17 @@
 const { Client } = require('pg');
-const config = require('./client');
+const config = {
+  user: 'postgres',
+  host: 'localhost',
+  port: '5432',
+};
 const INSERT = require('./queries');
-const tsConfig = { database: 'chronos_ts', ...config }
-const plConfig = { database: 'chronos_pl', ...config };
-const timescale = new Client(tsConfig);
-const pipeline = new Client(plConfig);
+const timescale = new Client({ database: 'chronos_ts', ...config });
+const pipeline = new Client({ database: 'chronos_pl', ...config });
+
 timescale.connect();
 pipeline.connect();
 
-const writeToDB = (msg) => {
-  const json = JSON.parse(msg.value)['json'];
+const writeToDB = (json) => {
   let { eType, timestamp, metadata } = json;
   timestamp /= 1000;
   let text;
