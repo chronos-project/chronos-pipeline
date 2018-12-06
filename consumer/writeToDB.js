@@ -6,8 +6,8 @@ const config = {
   port: process.env.PGPORT,
 };
 const INSERT = require('./queries');
-const timescale = new Client({ database: 'chronos_ts', ...config });
-const pipeline = new Client({ database: 'chronos_pl', ...config });
+const timescale = new Client({ database: process.env.PGDATABASE, ...config });
+const pipeline = new Client({ database: process.env.PGDATABASE, ...config });
 
 timescale.connect()
 .catch(error => console.log(error));

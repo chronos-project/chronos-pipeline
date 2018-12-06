@@ -2,6 +2,10 @@ version: '3'
 services:
   timescale:
     image: 'timescale/timescaledb:latest-pg10'
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres_password
   api:
     build:
       dockerfile: Dockerfile.dev
@@ -14,7 +18,7 @@ services:
   consumer:
     environment:
       - PGUSER=postgres
-      - PGHOST=postgres
+      - PGHOST=timescale
       - PGDATABASE=postgres
       - PGPASSWORD=postgres_password
       - PGPORT=5432
