@@ -9,8 +9,10 @@ const INSERT = require('./queries');
 const timescale = new Client({ database: 'chronos_ts', ...config });
 const pipeline = new Client({ database: 'chronos_pl', ...config });
 
-timescale.connect();
-pipeline.connect();
+timescale.connect()
+.catch(error => console.log(error));
+pipeline.connect()
+.catch(error => console.log(error));
 
 const writeToDB = (json) => {
   let { eType, timestamp, metadata } = json;
