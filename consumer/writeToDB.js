@@ -1,8 +1,9 @@
 const { Client } = require('pg');
 const config = {
-  user: 'postgres',
-  host: 'localhost',
-  port: '5432',
+  user: process.env.PGUSER,
+  host: process.env.PGHOST,
+  password: process.env.PGPASSWORD,
+  port: process.env.PGPORT,
 };
 const INSERT = require('./queries');
 const timescale = new Client({ database: 'chronos_ts', ...config });

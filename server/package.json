@@ -3,9 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
-    "start-ts": "PGDATABASE=chronos_ts node workers/worker",
-    "start-pl": "PGDATABASE=chronos_pl node workers/worker"
+    "dev": "nodemon ./bin/www",
+    "start": "node app"
   },
   "dependencies": {
     "bluebird": "^3.5.3",

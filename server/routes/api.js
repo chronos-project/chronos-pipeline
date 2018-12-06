@@ -5,7 +5,7 @@ const router = express.Router();
 const { Producer } = require('sinek');
 const kafkaConfig = require('../kafkaConfig');
 const partitions = 6;
-const compressionType = 2; // snappy compression
+const compressionType = 0; // no compression
 const topic = 'events';
 const producer = new Producer(kafkaConfig, topic, partitions);
 
