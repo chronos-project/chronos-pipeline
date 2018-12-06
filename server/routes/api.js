@@ -3,7 +3,7 @@ const router = express.Router();
 
 /* Kafka Producer Configuration */
 const { Producer } = require('sinek');
-const kafkaConfig = require('../kafkaConfig');
+const kafkaConfig = require('../../kafkaConfig');
 const partitions = 6;
 const compressionType = 0; // no compression
 const topic = 'events';

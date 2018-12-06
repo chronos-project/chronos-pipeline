@@ -1,5 +1,5 @@
 const kafkaConfig = {
-  kafkaHost: "localhost:9092,localhost:9093,localhost:9094",
+  kafkaHost: "localhost:9092, localhost:9093, localhost:9094",
   logger: {
       debug: msg => console.log(msg),
       info: msg => console.log(msg),
