@@ -1,34 +1,61 @@
-version: '3'
+version: '2'
 services:
   zookeeper:
-    image: wurstmeister/zookeeper
+    image: wurstmeister/zookeeper:latest
     ports:
       - "2181:2181"
-  timescale:
-    image: 'timescale/timescaledb:latest-pg10'
-    environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres_password
-  api:
-    build:
-      dockerfile: Dockerfile.dev
-      context: ./server
-    volumes:
-      - /app/node_modules
-      - ./server:/app
+  kafka1:
+    image: wurstmeister/kafka:2.11-2.0.0
     ports:
-      - "3000:3000"
-  consumer:
+      - "9092:9092"
     environment:
-      - PGUSER=postgres
-      - PGHOST=timescale
-      - PGDATABASE=postgres
-      - PGPASSWORD=postgres_password
-      - PGPORT=5432
-    build:
-      dockerfile: Dockerfile.dev
-      context: ./consumer
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://:9092,OUTSIDE://_192.168.0.1:9094
+      KAFKA_LISTENERS: INSIDE://:9092,OUTSIDE://:9094
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_CREATE_TOPICS: "test:1:1"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
     volumes:
-      - /app/node_modules
-      - ./consumer:/app
+      - /var/run/docker.sock:/var/run/docker.sock
+  # kafka2:
+  #   image: wurstmeister/kafka:2.11-2.0.0
+  #   ports:
+  #     - "9193:9093"
+  #   environment:
+  #     KAFKA_ADVERTISED_HOST_NAME: 192.168.0.1
+  #     KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+  # kafka3:
+  #   image: wurstmeister/kafka:2.11-2.0.0
+  #   ports:
+  #     - "9194:9094"
+  #   environment:
+  #     KAFKA_ADVERTISED_HOST_NAME: 192.168.0.1
+  # #     KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+  # timescale:
+  #   image: 'timescale/timescaledb:latest-pg10'
+  #   environment:
+  #     - POSTGRES_DB=postgres
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=postgres_password
+  # api:
+  #   build:
+  #     dockerfile: Dockerfile.dev
+  #     context: ./server
+  #   volumes:
+  #     - /app/node_modules
+  #     - ./server:/app
+  #   ports:
+  #     - "3000:3000"
+  # consumer:
+  #   environment:
+  #     - PGUSER=postgres
+  #     - PGHOST=timescale
+  #     - PGDATABASE=postgres
+  #     - PGPASSWORD=postgres_password
+  #     - PGPORT=5432
+  #   build:
+  #     dockerfile: Dockerfile.dev
+  #     context: ./consumer
+  #   volumes:
+  #     - /app/node_modules
+  #     - ./consumer:/app
