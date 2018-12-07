@@ -11,8 +11,7 @@ consumer.connect(withBackpressure).then(_ => {
 
     events.forEach(event => {
       event.metadata = metadata;
-      // writeToDB(event);
-      console.log(event);
+      writeToDB(event);
     });
 
     callback();
