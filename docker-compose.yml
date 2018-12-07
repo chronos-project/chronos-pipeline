@@ -47,7 +47,8 @@ services:
         - POSTGRES_PASSWORD=postgres_password
       volumes:
         - ./db/setup_timescale.sql:/docker-entrypoint-initdb.d/setup_timescale.sql
-      #   - ./db/postgres:/var/lib/postgresql/data
+        - ./db/postgres:/var/lib/postgresql/data
+
   api:
     build:
       dockerfile: Dockerfile.dev
@@ -57,6 +58,7 @@ services:
       - ./server:/app
     ports:
       - "3000:3000"
+
   consumer:
     environment:
       - PGUSER=postgres
