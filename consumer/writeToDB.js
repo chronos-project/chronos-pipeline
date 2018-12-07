@@ -1,16 +1,37 @@
+/* DB Configurations */
 const { Client } = require('pg');
 const config = {
-  user: 'postgres',
-  host: 'localhost',
-  port: '5432',
+  user: process.env.PGUSER,
+  host: process.env.PGHOST,
+  password: process.env.PGPASSWORD,
+  port: process.env.PGPORT,
 };
 const INSERT = require('./queries');
 const timescale = new Client({ database: 'chronos_ts', ...config });
-const pipeline = new Client({ database: 'chronos_pl', ...config });
+const pipeline = new Client({ database: process.env.PGDATABASE, ...config });
 
-timescale.connect();
-pipeline.connect();
+/* Connect to TimescaleDB */
+// TODO: finish implementing retry logic
+// let tsRetries = 5;
+//
+// while (tsRetries > 0) {
+//   try {
+//     timescale.connect();
+//     break;
+//   } catch (error) {
+//     console.log(error)
+//     tsRetries -= 1;
+//     console.log(`Retrying to establish connection to TimescaleDB. ${tsRetries} left.`);
+//     await new Promise(res => setTimeout(res, 5000));
+//   }
+// }
 
+timescale.connect()
+.catch(error => console.log(error));
+pipeline.connect()
+.catch(error => console.log(error));
+
+/* Write to Databases */
 const writeToDB = (json) => {
   let { eType, timestamp, metadata } = json;
   timestamp /= 1000;

@@ -1,5 +1,3 @@
-CREATE EXTENSION IF NOT EXISTS timescaledb CASCADE;
-
 CREATE TABLE link_clicks (
   id SERIAL NOT NULL,
   link_text TEXT,
