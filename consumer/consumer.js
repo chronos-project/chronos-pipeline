@@ -1,7 +1,7 @@
 const writeToDB = require('./writeToDB');
 const { Consumer } = require('sinek');
-const kafkaConfig = require('../kafkaConfig');
-const consumer = new Consumer('events', kafkaConfig);
+const kafkaConfig = require('./kafkaConfig');
+const consumer = new Consumer('test', kafkaConfig);
 const withBackpressure = true;
 
 consumer.connect(withBackpressure).then(_ => {
@@ -11,7 +11,8 @@ consumer.connect(withBackpressure).then(_ => {
 
     events.forEach(event => {
       event.metadata = metadata;
-      writeToDB(event);
+      // writeToDB(event);
+      console.log(event);
     });
 
     callback();

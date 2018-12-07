@@ -3,10 +3,10 @@ const router = express.Router();
 
 /* Kafka Producer Configuration */
 const { Producer } = require('sinek');
-const kafkaConfig = require('../../kafkaConfig');
-const partitions = 6;
+const kafkaConfig = require('./kafkaConfig');
+const partitions = 1;
 const compressionType = 0; // no compression
-const topic = 'events';
+const topic = 'test';
 const producer = new Producer(kafkaConfig, topic, partitions);
 
 producer.connect();
@@ -28,6 +28,7 @@ router.post('/events', (req, res) => {
   const json = req.body;
 
   try {
+    console.log(json);
     producer.buffer(topic, undefined, { json }, compressionType);
     res.send(JSON.stringify({"success": true}));
   } catch (e) {
