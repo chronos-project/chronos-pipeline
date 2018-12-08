@@ -1,7 +1,7 @@
 const writeToDB = require('./writeToDB');
 const { Consumer } = require('sinek');
 const kafkaConfig = require('./kafkaConfig');
-const consumer = new Consumer('test', kafkaConfig);
+const consumer = new Consumer('events', kafkaConfig);
 const withBackpressure = true;
 
 consumer.connect(withBackpressure).then(_ => {

@@ -1,12 +1,12 @@
 const kafkaConfig = {
-  kafkaHost: "kafka:29092",
+  kafkaHost: "kafka-1:29092,kafka-2:29092,kafka-3:29092",
   logger: {
       debug: msg => console.log(msg),
       info: msg => console.log(msg),
       warn: msg => console.log(msg),
       error: msg => console.log(msg)
   },
-  groupId: "test-group",
+  groupId: "chronos",
   clientName: "chronos-kafka",
   workerPerPartition: 1,
   options: {
