@@ -42,38 +42,38 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
-  # timescale:
-  #     image: 'timescale/timescaledb:latest-pg10'
-  #     ports:
-  #       - "5432:5432"
-  #     environment:
-  #       - POSTGRES_DB=chronos_ts
-  #       - POSTGRES_USER=postgres
-  #       - POSTGRES_PASSWORD=postgres_password
-  #     volumes:
-  #       - ./db/setup_timescale.sql:/docker-entrypoint-initdb.d/setup_timescale.sql
-  #       - ./db/postgres:/var/lib/postgresql/data
-  #
-  # api:
-  #   build:
-  #     dockerfile: Dockerfile.dev
-  #     context: ./server
-  #   volumes:
-  #     - /app/node_modules
-  #     - ./server:/app
-  #   ports:
-  #     - "3000:3000"
-  #
-  # consumer:
-  #   environment:
-  #     - PGUSER=postgres
-  #     - PGHOST=timescale
-  #     - PGDATABASE=postgres
-  #     - PGPASSWORD=postgres_password
-  #     - PGPORT=5432
-  #   build:
-  #     dockerfile: Dockerfile.dev
-  #     context: ./consumer
-  #   volumes:
-  #     - /app/node_modules
-  #     - ./consumer:/app
+  timescale:
+      image: 'timescale/timescaledb:latest-pg10'
+      ports:
+        - "5432:5432"
+      environment:
+        - POSTGRES_DB=chronos_ts
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres_password
+      volumes:
+        - ./db/setup_timescale.sql:/docker-entrypoint-initdb.d/setup_timescale.sql
+        - ./db/postgres:/var/lib/postgresql/data
+
+  api:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./server
+    volumes:
+      - /app/node_modules
+      - ./server:/app
+    ports:
+      - "3000:3000"
+
+  consumer:
+    environment:
+      - PGUSER=postgres
+      - PGHOST=timescale
+      - PGDATABASE=postgres
+      - PGPASSWORD=postgres_password
+      - PGPORT=5432
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./consumer
+    volumes:
+      - /app/node_modules
+      - ./consumer:/app
