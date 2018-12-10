@@ -74,8 +74,10 @@ services:
   consumer:
     environment:
       - PGUSER=postgres
-      - PGHOST=timescale
-      - PGDATABASE=postgres
+      - TSHOST=timescale
+      - TSDATABASE=chronos_ts
+      - PLHOST=pipeline
+      - PLDATABASE=chronos_pl
       - PGPASSWORD=postgres_password
       - PGPORT=5432
     build:

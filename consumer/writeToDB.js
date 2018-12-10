@@ -2,13 +2,12 @@
 const { Client } = require('pg');
 const config = {
   user: process.env.PGUSER,
-  host: process.env.PGHOST,
   password: process.env.PGPASSWORD,
   port: process.env.PGPORT,
 };
 const INSERT = require('./queries');
-const timescale = new Client({ database: 'chronos_ts', ...config });
-const pipeline = new Client({ database: process.env.PGDATABASE, ...config });
+const timescale = new Client({ database: process.env.TSDATABASE, host: process.env.TSHOST, ...config });
+const pipeline = new Client({ database: process.env.PLDATABASE, host: process.env.PLHOST, ...config });
 
 /* Connect to TimescaleDB */
 // TODO: finish implementing retry logic
