@@ -67,6 +67,10 @@ const writeToDB = (json) => {
   timescale.query(text, values, (err, res) => {
     console.log(err ? err.stack : res.rows[0]);
   });
+
+  pipeline.query(text, values, (err, res) => {
+    console.log(err ? err.stack : res.rows[0]);
+  });
 }
 
 module.exports = writeToDB;
