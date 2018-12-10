@@ -1,5 +1,3 @@
-CREATE EXTENSION IF NOT EXISTS pipelinedb;
-
 /*  STREAMS
     Note: constraints are currently unsupported on streams  */
 
