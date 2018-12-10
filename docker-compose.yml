@@ -54,6 +54,13 @@ services:
         - ./db/setup_timescale.sql:/docker-entrypoint-initdb.d/setup_timescale.sql
         - ./db/postgres:/var/lib/postgresql/data
 
+  pipeline:
+    image: "pipelinedb/pipelinedb-postgresql-10:latest"
+    environment:
+      - POSTGRES_DB=chronos_pl
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres_password
+
   api:
     build:
       dockerfile: Dockerfile.dev
