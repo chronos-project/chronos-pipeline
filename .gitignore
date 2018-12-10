@@ -1,3 +1,5 @@
 node_modules/
-db/postgres/*
-!db/postgres/.gitignore
+db/timescale/*
+!db/timescale/.gitignore
+db/pipeline/*
+!db/pipeline/.gitignore

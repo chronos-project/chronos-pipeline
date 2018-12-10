@@ -52,7 +52,17 @@ services:
         - POSTGRES_PASSWORD=postgres_password
       volumes:
         - ./db/setup_timescale.sql:/docker-entrypoint-initdb.d/setup_timescale.sql
-        - ./db/postgres:/var/lib/postgresql/data
+        - ./db/timescale:/var/lib/postgresql/data
+
+  pipeline:
+    image: "pipelinedb/pipelinedb-postgresql-10:latest"
+    environment:
+      - POSTGRES_DB=chronos_pl
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres_password
+    volumes:
+      - ./db/setup_pipelinedb.sql:/setup_pipelinedb.sql
+      - ./db/pipeline:/var/lib/postgresql/data
 
   api:
     build:
@@ -67,8 +77,10 @@ services:
   consumer:
     environment:
       - PGUSER=postgres
-      - PGHOST=timescale
-      - PGDATABASE=postgres
+      - TSHOST=timescale
+      - TSDATABASE=chronos_ts
+      - PLHOST=pipeline
+      - PLDATABASE=chronos_pl
       - PGPASSWORD=postgres_password
       - PGPORT=5432
     build:

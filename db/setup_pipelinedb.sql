@@ -1,5 +1,3 @@
-CREATE EXTENSION IF NOT EXISTS pipelinedb;
-
 /*  STREAMS
     Note: constraints are currently unsupported on streams  */
 
@@ -8,7 +6,6 @@ CREATE FOREIGN TABLE clicks(
   buttons INT,
   x INT,
   y INT,
-  time TIMESTAMPTZ DEFAULT NOW(),
   client_time TIMESTAMPTZ,
   metadata JSONB
 )
@@ -17,7 +14,6 @@ SERVER pipelinedb;
 CREATE FOREIGN TABLE link_clicks(
   link_text TEXT,
   target_url TEXT,
-  time TIMESTAMPTZ DEFAULT NOW(),
   client_time TIMESTAMPTZ,
   metadata JSONB
 )
@@ -26,7 +22,6 @@ SERVER pipelinedb;
 CREATE FOREIGN TABLE mouse_moves(
   x INT,
   y INT,
-  time TIMESTAMPTZ DEFAULT NOW(),
   client_time TIMESTAMPTZ,
   metadata JSONB
 )
@@ -34,7 +29,6 @@ SERVER pipelinedb;
 
   CREATE FOREIGN TABLE key_presses(
   key VARCHAR(1),
-  time TIMESTAMPTZ DEFAULT NOW(),
   client_time TIMESTAMPTZ,
   metadata JSONB
 )
@@ -43,7 +37,6 @@ SERVER pipelinedb;
 CREATE FOREIGN TABLE pageviews(
   url TEXT,
   title TEXT,
-  time TIMESTAMPTZ DEFAULT NOW(),
   client_time TIMESTAMPTZ,
   metadata JSONB
 )
@@ -51,7 +44,6 @@ SERVER pipelinedb;
 
 CREATE FOREIGN TABLE form_submissions(
   data JSONB,
-  time TIMESTAMPTZ DEFAULT NOW(),
   client_time TIMESTAMPTZ,
   metadata JSONB
 )
