@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
@@ -64,6 +64,14 @@ services:
       - ./db/setup_pipelinedb.sql:/setup_pipelinedb.sql
       - ./db/pipeline:/var/lib/postgresql/data
 
+  grafana:
+    image: "grafana/grafana:5.4.1"
+    ports:
+      - "4000:3000"
+    user: "472"
+    volumes:
+      - "grafana-data:/var/lib/grafana"
+
   api:
     build:
       dockerfile: Dockerfile.dev
@@ -89,3 +97,6 @@ services:
     volumes:
       - /app/node_modules
       - ./consumer:/app
+
+volumes:
+  grafana-data:
