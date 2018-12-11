@@ -5,6 +5,9 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    volumes:
+      - zk-data:/var/lib/zookeeper/data
+      - zk-txn-logs:/var/lib/zookeeper/log
 
   kafka-1:
     image: confluentinc/cp-kafka:latest
@@ -17,6 +20,8 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    volumes:
+      - kafka1-data:/var/lib/kafka/data
 
   kafka-2:
     image: confluentinc/cp-kafka:latest
@@ -29,6 +34,8 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    volumes:
+      - kafka2-data:/var/lib/kafka/data
 
   kafka-3:
     image: confluentinc/cp-kafka:latest
@@ -41,6 +48,8 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    volumes:
+      - kafka3-data:/var/lib/kafka/data
 
   timescale:
       image: 'timescale/timescaledb:latest-pg10'
@@ -100,3 +109,8 @@ services:
 
 volumes:
   grafana-data:
+  zk-data:
+  zk-txn-logs:
+  kafka1-data:
+  kafka2-data:
+  kafka3-data:
