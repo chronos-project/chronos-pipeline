@@ -61,7 +61,7 @@ services:
         - POSTGRES_PASSWORD=postgres_password
       volumes:
         - ./db/setup_timescale.sql:/docker-entrypoint-initdb.d/setup_timescale.sql
-        - ./db/timescale:/var/lib/postgresql/data
+        - timescale-data:/var/lib/postgresql/data
 
   pipeline:
     image: "pipelinedb/pipelinedb-postgresql-10:latest"
@@ -71,7 +71,7 @@ services:
       - POSTGRES_PASSWORD=postgres_password
     volumes:
       - ./db/setup_pipelinedb.sql:/setup_pipelinedb.sql
-      - ./db/pipeline:/var/lib/postgresql/data
+      - pipeline-data:/var/lib/postgresql/data
 
   grafana:
     image: "grafana/grafana:5.4.1"
@@ -114,3 +114,5 @@ volumes:
   kafka1-data:
   kafka2-data:
   kafka3-data:
+  timescale-data:
+  pipeline-data:
