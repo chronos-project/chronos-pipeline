@@ -23,8 +23,8 @@ router.get('/events', function(req, res, next) {
 
 /* Tracker API Endpoint */
 router.post('/events', (req, res) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  // res.header("Access-Control-Allow-Origin", "*");
+  // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   const json = req.body;
 
   try {
