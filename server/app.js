@@ -2,12 +2,12 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const dotenv = require('dotenv').config();
 const cors = require('cors');
 const config = require('./config');
 const bodyParser = require('body-parser');
 
 const requiresAllowedOrigin = require('./lib/allowed_origins_middleware');
+const requiresAllowedOrigin = require('./lib/require_access_key_middleware');
 
 const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
@@ -37,7 +37,10 @@ app.use(express.json({ type: (req) => {
 app.use(express.urlencoded({ extended: false }));
 // app.use(bodyParser.json({ type: 'application/*+json' }));
 app.use(cookieParser());
+
 app.use(requiresAllowedOrigin);
+app.use(requiresAccessKey);
+
 app.use(cors(corsOptions));
 app.use(express.static(path.join(__dirname, 'public')));
 
