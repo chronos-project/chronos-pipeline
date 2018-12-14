@@ -53,8 +53,6 @@ services:
 
   timescale:
       image: 'timescale/timescaledb:latest-pg10'
-      ports:
-        - "5432:5432"
       environment:
         - POSTGRES_DB=chronos_ts
         - POSTGRES_USER=postgres
