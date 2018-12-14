@@ -1,6 +1,6 @@
 let fs = require('fs');
 
-let configFileContents = fs.readFileSync('./config.json');
+let configFileContents = fs.readFileSync('./config.json', { encoding: 'utf8' });
 
 let config;
 
