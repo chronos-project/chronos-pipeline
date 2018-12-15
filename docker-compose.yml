@@ -68,7 +68,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres_password
     volumes:
-      - ./db/setup_pipelinedb.sql:/setup_pipelinedb.sql
+      # - ./db/setup_pipelinedb.sql:/setup_pipelinedb.sql
       - pipeline-data:/var/lib/postgresql/data
 
   grafana:
