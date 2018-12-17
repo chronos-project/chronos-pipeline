@@ -36,11 +36,11 @@ switch (command) {
     break;
 
   case 'install-pipeline':
-    console.log('Setting up PipelineDB...');
+    log('Setting up PipelineDB...');
     exec('docker-compose up -d pipeline', (err, stdout, stderr) => {
       setTimeout(() => {
         exec('docker exec -i chronos-pipeline_pipeline_1 psql -U postgres -d chronos_pl < db/setup_pipelinedb.sql').on('close', () => {
-          console.log('PipelineDB has been configured!');
+          log('PipelineDB has been configured!');
         });
       }, 5000)
     })
