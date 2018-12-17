@@ -95,6 +95,7 @@ const installPipeline = () => {
     }, 5000)
   });
 };
+const status = () => (exec('docker ps', (err, stdout, stderr) => console.log(stdout)));
 
 const singleArg = (command) => {
   switch (command) {
@@ -111,7 +112,8 @@ const singleArg = (command) => {
       stopChronos();
       break;
     case 'status':
-      exec('docker ps', (err, stdout, stderr) => console.log(stdout));
+      status();
+      break;
     default:
       // TODO: add error and help file
   }
