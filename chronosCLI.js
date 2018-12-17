@@ -1,6 +1,15 @@
 const exec = require('child_process').exec;
 const SERVICES = ['kafka-1', 'kafka-2', 'kafka-3', 'zookeeper', 'grafana',
                   'timescale', 'pipeline', 'api', 'consumer'];
+const SERVICE_LISTING = `
+   List of services:
+   zookeeper          Apache Zookeeper
+   kafka-(1|2|3)      Kafka Broker 1, 2, or 3
+   timescaledb        TimescaleDB
+   pipelinedb         PipelineDB
+   grafana            Grafana
+   api                API Server
+   consumer           Kafka Consumer`
 const NAMES = {
   'kafka-1': 'Kafka Broker 1',
   'kafka-2': 'Kafka Broker 2',
@@ -20,7 +29,9 @@ const logs = (service) => {
   if (SERVICES.includes(service)) {
     exec(`docker-compose logs ${service}`, (err, stdout, stderr) => log(stdout));
   } else {
-    // show man page for logs
+    log(`${service} is not a valid service.`);
+    log(`chronos logs [service]
+      ${SERVICE_LISTING}`);
   }
 };
 const startChronos = () => {
@@ -38,7 +49,9 @@ const startService = (service) => {
       log(`${NAMES[service]} has succesfully booted up.`);
     });
   } else {
-    // show man page for start
+    log(`${service} is not a valid service.`);
+    log(`chronos start [service]
+      ${SERVICE_LISTING}`);
   }
 };
 const stopChronos = () => {
@@ -54,7 +67,9 @@ const stopService = (service) => {
       log(`${NAMES[service]} has been succesfully shut down.`);
     });
   } else {
-    // show man page for stop
+    log(`${service} is not a valid service.`);
+    log(`chronos stop [service]
+      ${SERVICE_LISTING}`);
   }
 };
 const installKafka = () => {
@@ -120,10 +135,10 @@ const singleArg = (command) => {
 };
 
 const twoArg = (cmd, arg) => {
-  if (cmd === 'stopService') {
-    stop(arg);
-  } else if (cmd === 'startService') {
-    start(arg);
+  if (cmd === 'stop') {
+    stopService(arg);
+  } else if (cmd === 'start') {
+    startService(arg);
   } else if (cmd === 'logs') {
     logs(arg);
   } else {
