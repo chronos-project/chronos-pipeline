@@ -2,14 +2,15 @@ const exec = require('child_process').exec;
 const SERVICES = ['kafka-1', 'kafka-2', 'kafka-3', 'zookeeper', 'grafana',
                   'timescale', 'pipeline', 'api', 'consumer'];
 const SERVICE_LISTING = `
-   List of services:
-   zookeeper          Apache Zookeeper
-   kafka-(1|2|3)      Kafka Broker 1, 2, or 3
-   timescaledb        TimescaleDB
-   pipelinedb         PipelineDB
-   grafana            Grafana
-   api                API Server
-   consumer           Kafka Consumer`
+service            description
+-------            -----------
+zookeeper          Apache Zookeeper
+kafka-(1|2|3)      Kafka Broker 1, 2, or 3
+timescaledb        TimescaleDB
+pipelinedb         PipelineDB
+grafana            Grafana
+api                API Server
+consumer           Kafka Consumer`
 const NAMES = {
   'kafka-1': 'Kafka Broker 1',
   'kafka-2': 'Kafka Broker 2',
@@ -21,6 +22,20 @@ const NAMES = {
   'api': 'API Server',
   'consumer': 'Consumer'
 };
+const MAN = `
+command           description
+-------           -----------
+start [service]   Starts Chronos or an individual service.
+
+stop [service]    Stops Chronos or an individual service.
+
+logs (service)    Prints the logs of an individual service.
+
+status            Prints 'docker ps' information of all running services.
+
+install-kafka     Installs Zookeeper, Kafka Brokers, and creates 'events' topic.
+
+install-pipeline  Installs PipelineDB and sets up database.`
 const command = process.argv[2];
 const log = (msg) => {
   console.log(`>> ${msg}`);
@@ -30,7 +45,7 @@ const logs = (service) => {
     exec(`docker-compose logs ${service}`, (err, stdout, stderr) => log(stdout));
   } else {
     log(`${service} is not a valid service.`);
-    log(`chronos logs [service]
+    log(`format: chronos logs (service)
       ${SERVICE_LISTING}`);
   }
 };
@@ -50,7 +65,7 @@ const startService = (service) => {
     });
   } else {
     log(`${service} is not a valid service.`);
-    log(`chronos start [service]
+    log(`format: chronos start [service]
       ${SERVICE_LISTING}`);
   }
 };
@@ -68,7 +83,7 @@ const stopService = (service) => {
     });
   } else {
     log(`${service} is not a valid service.`);
-    log(`chronos stop [service]
+    log(`format: chronos stop [service]
       ${SERVICE_LISTING}`);
   }
 };
@@ -129,8 +144,17 @@ const singleArg = (command) => {
     case 'status':
       status();
       break;
+    case 'help':
+      log(`Chronos MAN page:
+        ${MAN}`);
+      break;
+    case undefined:
+      log(`please enter a command
+        ${MAN}`);
+      break;
     default:
-      // TODO: add error and help file
+      log(`${command} is not a valid command.
+        ${MAN}`);
   }
 };
 
