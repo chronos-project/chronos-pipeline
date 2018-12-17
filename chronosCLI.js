@@ -114,6 +114,55 @@ const twoArg = (cmd, arg) => {
     } else {
       log("That's not a valid service.");
     }
+  } else if (cmd === 'start') {
+    if (arg === 'kafka-1') {
+      log('Starting Kafka Broker 1...');
+      exec('docker-compose start kafka-1').on('close', () => {
+        log('Kafka Broker 1 has succesfully booted up.');
+      });
+    } else if (arg === 'kafka-2') {
+      log('Starting Kafka Broker 2...');
+      exec('docker-compose start kafka-2').on('close', () => {
+        log('Kafka Broker 2 has succesfully booted up.');
+      });
+    } else if (arg === 'kafka-3') {
+      log('Starting Kafka Broker 3...');
+      exec('docker-compose start kafka-3').on('close', () => {
+        log('Kafka Broker 3 has succesfully booted up.');
+      });
+    } else if (arg === 'zookeeper') {
+      log('Starting Zookeeper...');
+      exec('docker-compose start zookeeper').on('close', () => {
+        log('Zookeeper has succesfully booted up.');
+      });
+    } else if (arg === 'timescale') {
+      log('Starting TimescaleDB...');
+      exec('docker-compose start timescale').on('close', () => {
+        log('TimescaleDB has succesfully booted up.');
+      });
+    } else if (arg === 'pipeline') {
+      log('Starting PipelineDB...');
+      exec('docker-compose start pipeline').on('close', () => {
+        log('PipelineDB has succesfully booted up.');
+      });
+    } else if (arg === 'api') {
+      log('Starting API Server...');
+      exec('docker-compose start api').on('close', () => {
+        log('API Server has succesfully booted up.');
+      });
+    } else if (arg === 'consumer') {
+      log('Starting Consumer...');
+      exec('docker-compose start consumer').on('close', () => {
+        log('Consumer has succesfully booted up.');
+      });
+    } else if (arg === 'grafana') {
+      log('Starting Grafana...');
+      exec('docker-compose start grafana').on('close', () => {
+        log('Grafana has succesfully booted up.');
+      });
+    } else {
+      log("That's not a valid service.");
+    }
   }
 }
 
