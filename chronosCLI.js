@@ -43,36 +43,39 @@ const stop = (service) => {
     // show man page for stop
   }
 };
+const installKafka = () => {
+  log('Setting up Kafka...');
+  exec('docker-compose up -d zookeeper', (err, stdout, stderr) => {
+    log('Starting Zookeeper...');
+    setTimeout(() => {
+      log('Starting Kafka Brokers...');
+      exec('docker-compose up -d kafka-1').on('close', () => {
+        log('Kafka Broker 1 running');
+        exec('docker-compose up -d kafka-2').on('close', () => {
+          log('Kafka Broker 2 running');
+          exec('docker-compose up -d kafka-3').on('close', () => {
+            log('Kafka Broker 3 running');
+
+            setTimeout(() => {
+              log("Setting up 'events' topic...")
+              exec('docker exec -i chronos-pipeline_kafka-1_1 kafka-topics --zookeeper zookeeper:2181 --create --topic events --replication-factor 3 --partitions 6 --if-not-exists').on('close', () => {
+                log('Topic created')
+                exec('docker-compose stop');
+                log('Stopping Zookeeper and Kafka Brokers...')
+              });
+            }, 7000);
+          });
+        });
+      });
+      log('Kafka cluster has been configured!');
+    }, 7000);
+  });
+}
 
 const singleArg = (command) => {
   switch (command) {
     case 'install-kafka':
-      log('Setting up Kafka...');
-      exec('docker-compose up -d zookeeper', (err, stdout, stderr) => {
-        log('Starting Zookeeper...');
-        setTimeout(() => {
-          log('Starting Kafka Brokers...');
-          exec('docker-compose up -d kafka-1').on('close', () => {
-            log('Kafka Broker 1 running');
-            exec('docker-compose up -d kafka-2').on('close', () => {
-              log('Kafka Broker 2 running');
-              exec('docker-compose up -d kafka-3').on('close', () => {
-                log('Kafka Broker 3 running');
-
-                setTimeout(() => {
-                  log("Setting up 'events' topic...")
-                  exec('docker exec -i chronos-pipeline_kafka-1_1 kafka-topics --zookeeper zookeeper:2181 --create --topic events --replication-factor 3 --partitions 6 --if-not-exists').on('close', () => {
-                    log('Topic created')
-                    exec('docker-compose stop');
-                    log('Stopping Zookeeper and Kafka Brokers...')
-                  });
-                }, 7000);
-              });
-            });
-          });
-          log('Kafka cluster has been configured!');
-        }, 7000);
-      });
+      installKafka();
       break;
     case 'install-pipeline':
       log('Setting up PipelineDB...');
@@ -112,6 +115,8 @@ const twoArg = (cmd, arg) => {
     start(arg);
   } else if (cmd === 'logs') {
     logs(arg);
+  } else {
+    // show man page
   }
 }
 
