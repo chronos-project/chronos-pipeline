@@ -70,7 +70,17 @@ const installKafka = () => {
       log('Kafka cluster has been configured!');
     }, 7000);
   });
-}
+};
+const installPipeline = () => {
+  log('Setting up PipelineDB...');
+  exec('docker-compose up -d pipeline', (err, stdout, stderr) => {
+    setTimeout(() => {
+      exec('docker exec -i chronos-pipeline_pipeline_1 psql -U postgres -d chronos_pl < db/setup_pipelinedb.sql').on('close', () => {
+        log('PipelineDB has been configured!');
+      });
+    }, 5000)
+  });
+};
 
 const singleArg = (command) => {
   switch (command) {
@@ -78,14 +88,7 @@ const singleArg = (command) => {
       installKafka();
       break;
     case 'install-pipeline':
-      log('Setting up PipelineDB...');
-      exec('docker-compose up -d pipeline', (err, stdout, stderr) => {
-        setTimeout(() => {
-          exec('docker exec -i chronos-pipeline_pipeline_1 psql -U postgres -d chronos_pl < db/setup_pipelinedb.sql').on('close', () => {
-            log('PipelineDB has been configured!');
-          });
-        }, 5000)
-      })
+      installPipeline();
       break;
     case 'start':
       log('Chronos is booting up...');
