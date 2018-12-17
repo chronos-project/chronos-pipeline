@@ -11,7 +11,7 @@ const NAMES = {
   'grafana': 'Grafana',
   'api': 'API Server',
   'consumer': 'Consumer'
-};                  
+};
 const command = process.argv[2];
 const log = (msg) => {
   console.log(`>> ${msg}`);
@@ -34,7 +34,14 @@ const start = (service) => {
   }
 };
 const stop = (service) => {
-
+  if (SERVICES.includes(service)) {
+    log(`Stopping ${NAMES[service]}...`);
+    exec(`docker-compose stop ${service}`).on('close', () => {
+      log(`${NAMES[service]} has been succesfully shut down.`);
+    });
+  } else {
+    // show man page for stop
+  }
 };
 
 const singleArg = (command) => {
@@ -100,54 +107,7 @@ const singleArg = (command) => {
 
 const twoArg = (cmd, arg) => {
   if (cmd === 'stop') {
-    if (arg === 'kafka-1') {
-      log('Stopping Kafka Broker 1...');
-      exec('docker-compose stop kafka-1').on('close', () => {
-        log('Kafka Broker 1 has been succesfully shut down.');
-      });
-    } else if (arg === 'kafka-2') {
-      log('Stopping Kafka Broker 2...');
-      exec('docker-compose stop kafka-2').on('close', () => {
-        log('Kafka Broker 2 has been succesfully shut down.');
-      });
-    } else if (arg === 'kafka-3') {
-      log('Stopping Kafka Broker 3...');
-      exec('docker-compose stop kafka-3').on('close', () => {
-        log('Kafka Broker 3 has been succesfully shut down.');
-      });
-    } else if (arg === 'zookeeper') {
-      log('Stopping Zookeeper...');
-      exec('docker-compose stop zookeeper').on('close', () => {
-        log('Zookeeper has been succesfully shut down.');
-      });
-    } else if (arg === 'timescale') {
-      log('Stopping TimescaleDB...');
-      exec('docker-compose stop timescale').on('close', () => {
-        log('TimescaleDB has been succesfully shut down.');
-      });
-    } else if (arg === 'pipeline') {
-      log('Stopping PipelineDB...');
-      exec('docker-compose stop pipeline').on('close', () => {
-        log('PipelineDB has been succesfully shut down.');
-      });
-    } else if (arg === 'api') {
-      log('Stopping API Server...');
-      exec('docker-compose stop api').on('close', () => {
-        log('API Server has been succesfully shut down.');
-      });
-    } else if (arg === 'consumer') {
-      log('Stopping Consumer...');
-      exec('docker-compose stop consumer').on('close', () => {
-        log('Consumer has been succesfully shut down.');
-      });
-    } else if (arg === 'grafana') {
-      log('Stopping Grafana...');
-      exec('docker-compose stop grafana').on('close', () => {
-        log('Grafana has been succesfully shut down.');
-      });
-    } else {
-      log("That's not a valid service.");
-    }
+    stop(arg);
   } else if (cmd === 'start') {
     start(arg);
   } else if (cmd === 'logs') {
