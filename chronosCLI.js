@@ -23,7 +23,7 @@ const logs = (service) => {
     // show man page for logs
   }
 };
-const start = (service) => {
+const startService = (service) => {
   if (SERVICES.includes(service)) {
     log(`Starting ${NAMES[service]}...`);
     exec(`docker-compose start ${service}`).on('close', () => {
@@ -33,7 +33,7 @@ const start = (service) => {
     // show man page for start
   }
 };
-const stop = (service) => {
+const stopService = (service) => {
   if (SERVICES.includes(service)) {
     log(`Stopping ${NAMES[service]}...`);
     exec(`docker-compose stop ${service}`).on('close', () => {
@@ -112,9 +112,9 @@ const singleArg = (command) => {
 }
 
 const twoArg = (cmd, arg) => {
-  if (cmd === 'stop') {
+  if (cmd === 'stopService') {
     stop(arg);
-  } else if (cmd === 'start') {
+  } else if (cmd === 'startService') {
     start(arg);
   } else if (cmd === 'logs') {
     logs(arg);
