@@ -37,6 +37,7 @@ install-kafka     Installs Zookeeper, Kafka Brokers, and creates 'events' topic.
 
 install-pipeline  Installs PipelineDB and sets up database.`
 const command = process.argv[2];
+const service = process.argv[3];
 const log = (msg) => {
   console.log(`>> ${msg}`);
 };
@@ -183,10 +184,8 @@ const twoArg = (command, service) => {
   }
 };
 
-
-
 if (!process.argv[3]) {
   singleArg(command);
 } else if (process.argv[3]) {
-  twoArg(command, process.argv[3]);
+  twoArg(command, service);
 }
