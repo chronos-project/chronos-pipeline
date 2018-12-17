@@ -92,7 +92,7 @@ const installPipeline = () => {
       exec('docker exec -i chronos-pipeline_pipeline_1 psql -U postgres -d chronos_pl < db/setup_pipelinedb.sql').on('close', () => {
         log('PipelineDB has been configured!');
       });
-    }, 5000)
+    }, 5000);
   });
 };
 const status = () => (exec('docker ps', (err, stdout, stderr) => console.log(stdout)));
@@ -117,7 +117,7 @@ const singleArg = (command) => {
     default:
       // TODO: add error and help file
   }
-}
+};
 
 const twoArg = (cmd, arg) => {
   if (cmd === 'stopService') {
@@ -129,7 +129,7 @@ const twoArg = (cmd, arg) => {
   } else {
     // show man page
   }
-}
+};
 
 
 
