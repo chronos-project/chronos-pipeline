@@ -158,15 +158,28 @@ const singleArg = (command) => {
   }
 };
 
-const twoArg = (cmd, arg) => {
-  if (cmd === 'stop') {
-    stopService(arg);
-  } else if (cmd === 'start') {
-    startService(arg);
-  } else if (cmd === 'logs') {
-    logs(arg);
-  } else {
-    // show man page
+const twoArg = (command, service) => {
+  switch (command) {
+    case 'start':
+      startService(service);
+      break;
+    case 'stop':
+      stopService(service);
+      break;
+    case 'logs':
+      logs(service);
+      break;
+    case 'help':
+      log(`Chronos MAN page:
+        ${MAN}`);
+      break;
+    case undefined:
+      log(`please enter a command
+        ${MAN}`);
+      break;
+    default:
+      log(`${command} is not a valid command.
+        ${MAN}`);
   }
 };
 
