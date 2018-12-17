@@ -1,27 +1,38 @@
 const exec = require('child_process').exec;
 const command = process.argv[2];
+const log = (msg) => {
+  console.log(`>> ${msg}`);
+};
 
 switch (command) {
   case 'install-kafka':
-    console.log('Setting up Kafka...');
+    log('Setting up Kafka...');
     exec('docker-compose up -d zookeeper', (err, stdout, stderr) => {
+      log('Starting Zookeeper...');
       setTimeout(() => {
+        log('Starting Kafka Brokers...');
         exec('docker-compose up -d kafka-1').on('close', () => {
+          log('Kafka Broker 1 running');
           exec('docker-compose up -d kafka-2').on('close', () => {
+            log('Kafka Broker 2 running');
             exec('docker-compose up -d kafka-3').on('close', () => {
+              log('Kafka Broker 3 running');
 
               setTimeout(() => {
+                log("Setting up 'events' topic...")
                 exec('docker exec -i chronos-pipeline_kafka-1_1 kafka-topics --zookeeper zookeeper:2181 --create --topic events --replication-factor 3 --partitions 6 --if-not-exists').on('close', () => {
+                  log('Topic created')
                   exec('docker-compose stop');
-                  console.log('Kafka cluster has been configured!');
+                  log('Stopping Zookeeper and Kafka Brokers...')
                 });
-              }, 7000)
+              }, 7000);
             });
           });
         });
+        log('Kafka cluster has been configured!');
       }, 7000);
     });
-    
+
     break;
 
   case 'install-pipeline':
@@ -37,17 +48,17 @@ switch (command) {
     break;
 
   case 'start':
-    console.log('Chronos is booting up...');
+    log('Chronos is booting up...');
     exec('docker-compose up -d zookeeper', (err, stdout, stderr) => {
       setTimeout(() => exec('docker-compose up').on('close', (err, stdout, stderr) => {
-        console.log('Chronos has succesfully booted up!');
+        log('Chronos has succesfully booted up!');
       }), 7000);
     });
     break;
   case 'stop':
-    console.log('Chronos is shutting down...');
+    log('Chronos is shutting down...');
     exec('docker-compose stop', (err, stdout, stderr) => {
-      console.log('Chronos has successfully shut down.');
+      log('Chronos has successfully shut down.');
     });
     break;
   case 'status':
