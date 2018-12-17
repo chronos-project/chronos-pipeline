@@ -1,6 +1,17 @@
 const exec = require('child_process').exec;
 const SERVICES = ['kafka-1', 'kafka-2', 'kafka-3', 'zookeeper', 'grafana',
                   'timescale', 'pipeline', 'api', 'consumer'];
+const NAMES = {
+  'kafka-1': 'Kafka Broker 1',
+  'kafka-2': 'Kafka Broker 2',
+  'kafka-3': 'Kafka Broker 3',
+  'zookeeper': 'Zookeeper',
+  'timescale': 'TimescaleDB',
+  'pipeline': 'PipelineDB',
+  'grafana': 'Grafana',
+  'api': 'API Server',
+  'consumer': 'Consumer'
+};                  
 const command = process.argv[2];
 const log = (msg) => {
   console.log(`>> ${msg}`);
@@ -13,18 +24,6 @@ const logs = (service) => {
   }
 };
 const start = (service) => {
-  NAMES = {
-    'kafka-1': 'Kafka Broker 1',
-    'kafka-2': 'Kafka Broker 2',
-    'kafka-3': 'Kafka Broker 3',
-    'zookeeper': 'Zookeeper',
-    'timescale': 'TimescaleDB',
-    'pipeline': 'PipelineDB',
-    'grafana': 'Grafana',
-    'api': 'API Server',
-    'consumer': 'Consumer'
-  };
-
   if (SERVICES.includes(service)) {
     log(`Starting ${NAMES[service]}...`);
     exec(`docker-compose start ${service}`).on('close', () => {
