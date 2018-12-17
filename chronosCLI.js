@@ -1,8 +1,18 @@
 const exec = require('child_process').exec;
+const SERVICES = ['kafka-1', 'kafka-2', 'kafka-3', 'zookeeper', 'grafana',
+                  'timescale', 'pipeline', 'api', 'consumer'];
 const command = process.argv[2];
 const log = (msg) => {
   console.log(`>> ${msg}`);
 };
+const logs = (service) => {
+  if (SERVICES.includes(service)) {
+    exec(`docker-compose logs ${service}`, (err, stdout, stderr) => log(stdout));
+  } else {
+    // show man page for logs
+  }
+};
+
 const singleArg = (command) => {
   switch (command) {
     case 'install-kafka':
@@ -164,29 +174,11 @@ const twoArg = (cmd, arg) => {
       log("That's not a valid service.");
     }
   } else if (cmd === 'logs') {
-    if (arg === 'kafka-1') {
-      exec('docker-compose logs kafka-1', (err, stdout, stderr) => log(stdout));
-    } else if (arg === 'kafka-2') {
-      exec('docker-compose logs kafka-2', (err, stdout, stderr) => log(stdout));
-    } else if (arg === 'kafka-3') {
-      exec('docker-compose logs kafka-3', (err, stdout, stderr) => log(stdout));
-    } else if (arg === 'zookeeper') {
-      exec('docker-compose logs zookeeper', (err, stdout, stderr) => log(stdout));
-    } else if (arg === 'timescale') {
-      exec('docker-compose logs timescale', (err, stdout, stderr) => log(stdout));
-    } else if (arg === 'pipeline') {
-      exec('docker-compose logs pipeline', (err, stdout, stderr) => log(stdout));
-    } else if (arg === 'api') {
-      exec('docker-compose logs api', (err, stdout, stderr) => log(stdout));
-    } else if (arg === 'consumer') {
-      exec('docker-compose logs consumer', (err, stdout, stderr) => log(stdout));
-    } else if (arg === 'grafana') {
-      exec('docker-compose logs grafana', (err, stdout, stderr) => log(stdout));
-    } else {
-      log("That's not a valid service.");
-    }
+    logs(arg);
   }
 }
+
+
 
 if (!process.argv[3]) {
   singleArg(command);
