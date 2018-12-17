@@ -23,6 +23,14 @@ const logs = (service) => {
     // show man page for logs
   }
 };
+const startChronos = () => {
+  log('Chronos is booting up...');
+  exec('docker-compose up -d zookeeper', (err, stdout, stderr) => {
+    setTimeout(() => exec('docker-compose up').on('close', (err, stdout, stderr) => {
+      log('Chronos has succesfully booted up!');
+    }), 7000);
+  });
+};
 const startService = (service) => {
   if (SERVICES.includes(service)) {
     log(`Starting ${NAMES[service]}...`);
@@ -33,6 +41,12 @@ const startService = (service) => {
     // show man page for start
   }
 };
+const stopChronos = () => {
+  log('Chronos is shutting down...');
+  exec('docker-compose stop', (err, stdout, stderr) => {
+    log('Chronos has successfully shut down.');
+  });
+}
 const stopService = (service) => {
   if (SERVICES.includes(service)) {
     log(`Stopping ${NAMES[service]}...`);
@@ -91,18 +105,10 @@ const singleArg = (command) => {
       installPipeline();
       break;
     case 'start':
-      log('Chronos is booting up...');
-      exec('docker-compose up -d zookeeper', (err, stdout, stderr) => {
-        setTimeout(() => exec('docker-compose up').on('close', (err, stdout, stderr) => {
-          log('Chronos has succesfully booted up!');
-        }), 7000);
-      });
+      startChronos();
       break;
     case 'stop':
-      log('Chronos is shutting down...');
-      exec('docker-compose stop', (err, stdout, stderr) => {
-        log('Chronos has successfully shut down.');
-      });
+      stopChronos();
       break;
     case 'status':
       exec('docker ps', (err, stdout, stderr) => console.log(stdout));
