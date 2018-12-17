@@ -12,6 +12,31 @@ const logs = (service) => {
     // show man page for logs
   }
 };
+const start = (service) => {
+  NAMES = {
+    'kafka-1': 'Kafka Broker 1',
+    'kafka-2': 'Kafka Broker 2',
+    'kafka-3': 'Kafka Broker 3',
+    'zookeeper': 'Zookeeper',
+    'timescale': 'TimescaleDB',
+    'pipeline': 'PipelineDB',
+    'grafana': 'Grafana',
+    'api': 'API Server',
+    'consumer': 'Consumer'
+  };
+
+  if (SERVICES.includes(service)) {
+    log(`Starting ${NAMES[service]}...`);
+    exec(`docker-compose start ${service}`).on('close', () => {
+      log(`${NAMES[service]} has succesfully booted up.`);
+    });
+  } else {
+    // show man page for start
+  }
+};
+const stop = (service) => {
+
+};
 
 const singleArg = (command) => {
   switch (command) {
@@ -125,54 +150,7 @@ const twoArg = (cmd, arg) => {
       log("That's not a valid service.");
     }
   } else if (cmd === 'start') {
-    if (arg === 'kafka-1') {
-      log('Starting Kafka Broker 1...');
-      exec('docker-compose start kafka-1').on('close', () => {
-        log('Kafka Broker 1 has succesfully booted up.');
-      });
-    } else if (arg === 'kafka-2') {
-      log('Starting Kafka Broker 2...');
-      exec('docker-compose start kafka-2').on('close', () => {
-        log('Kafka Broker 2 has succesfully booted up.');
-      });
-    } else if (arg === 'kafka-3') {
-      log('Starting Kafka Broker 3...');
-      exec('docker-compose start kafka-3').on('close', () => {
-        log('Kafka Broker 3 has succesfully booted up.');
-      });
-    } else if (arg === 'zookeeper') {
-      log('Starting Zookeeper...');
-      exec('docker-compose start zookeeper').on('close', () => {
-        log('Zookeeper has succesfully booted up.');
-      });
-    } else if (arg === 'timescale') {
-      log('Starting TimescaleDB...');
-      exec('docker-compose start timescale').on('close', () => {
-        log('TimescaleDB has succesfully booted up.');
-      });
-    } else if (arg === 'pipeline') {
-      log('Starting PipelineDB...');
-      exec('docker-compose start pipeline').on('close', () => {
-        log('PipelineDB has succesfully booted up.');
-      });
-    } else if (arg === 'api') {
-      log('Starting API Server...');
-      exec('docker-compose start api').on('close', () => {
-        log('API Server has succesfully booted up.');
-      });
-    } else if (arg === 'consumer') {
-      log('Starting Consumer...');
-      exec('docker-compose start consumer').on('close', () => {
-        log('Consumer has succesfully booted up.');
-      });
-    } else if (arg === 'grafana') {
-      log('Starting Grafana...');
-      exec('docker-compose start grafana').on('close', () => {
-        log('Grafana has succesfully booted up.');
-      });
-    } else {
-      log("That's not a valid service.");
-    }
+    start(arg);
   } else if (cmd === 'logs') {
     logs(arg);
   }
