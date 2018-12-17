@@ -170,6 +170,15 @@ const twoArg = (command, service) => {
     case 'logs':
       logs(service);
       break;
+    case 'install-kafka':
+      installKafka();
+      break;
+    case 'install-pipeline':
+      installPipeline();
+      break;
+    case 'status':
+      status();
+      break;
     case 'help':
       log(`Chronos MAN page:
         ${MAN}`);
