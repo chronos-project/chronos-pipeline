@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 
 const requiresAllowedOrigin = require('./lib/allowed_origins_middleware');
 const requiresAccessKey = require('./lib/requires_access_key_middleware');
+const decode = require('./lib/decode_payload_middleware');
 
 const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
@@ -16,11 +17,12 @@ const app = express();
 
 app.use(cors())
 app.use(logger('dev'));
-app.use(express.json({ type: (req) => true }));
+app.use(bodyParser.raw());
 
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+app.use(decode);
 app.use(requiresAllowedOrigin);
 app.use(requiresAccessKey);
 
