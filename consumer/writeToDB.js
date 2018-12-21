@@ -9,57 +9,43 @@ const INSERT = require('./queries');
 const timescale = new Client({ database: process.env.TSDATABASE, host: process.env.TSHOST, ...config });
 const pipeline = new Client({ database: process.env.PLDATABASE, host: process.env.PLHOST, ...config });
 
-/* Connect to TimescaleDB */
-// TODO: finish implementing retry logic
-// let tsRetries = 5;
-//
-// while (tsRetries > 0) {
-//   try {
-//     timescale.connect();
-//     break;
-//   } catch (error) {
-//     console.log(error)
-//     tsRetries -= 1;
-//     console.log(`Retrying to establish connection to TimescaleDB. ${tsRetries} left.`);
-//     await new Promise(res => setTimeout(res, 5000));
-//   }
-// }
-
 timescale.connect()
 .catch(error => console.log(error));
 pipeline.connect()
 .catch(error => console.log(error));
 
 /* Write to Databases */
-const writeToDB = (json) => {
-  let { eType, timestamp, metadata } = json;
+const writeToDB = (event) => {
+  let metadata = event[event.length - 1];
+  let eType = event[0];
+  let timestamp = event[event.length - 2];
   timestamp /= 1000;
   let text;
   let values;
 
   if (eType === 'link_clicks') {
-    let { linkText, targetURL } = json;
+    let [ linkText, targetURL ] = [event[1], event[2]];
     text = INSERT.link_click;
     values = [linkText, targetURL, timestamp, metadata];
   } else if (eType === 'clicks') {
-    let { target_node, buttons, x, y } = json;
+    let [ target_node, buttons, x, y ] = [event[1], event[2], event[3], event[4]];
     text = INSERT.click;
     values = [target_node, buttons, x, y, timestamp, metadata];
   } else if (eType === 'mouse_moves') {
-    let { x, y } = json;
+    let [ x, y ] = [event[1], event[2]];
     text = INSERT.mouse_move;
     values = [x, y, timestamp, metadata];
   } else if (eType === 'key_presses') {
-    let { key } = json;
+    let key = event[1];
     text = INSERT.key_press;
     values = [key, timestamp, metadata];
   } else if (eType === 'pageviews') {
-    let { url, title } = json;
+    let [ url, title ] = [event[1], event[2]];
     // console.log(url, title);
     text = INSERT.pageview;
     values = [url, title, timestamp, metadata];
   } else if (eType === 'form_submissions') {
-    let { data } = json;
+    let data = event[1];
     text = INSERT.form_submission;
     values = [data, timestamp, metadata];
   }
