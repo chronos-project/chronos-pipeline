@@ -24,9 +24,9 @@ router.get('/events', function(req, res, next) {
 /* Tracker API Endpoint */
 router.post('/events', (req, res) => {
   try {
-    const json = req.body['data'];
+    const json = JSON.stringify(req.body['data']);
 
-    producer.buffer(topic, undefined, { json }, compressionType);
+    producer.send(topic, json);
     res.json({"success": true});
   } catch (e) {
     res.send(JSON.stringify({
