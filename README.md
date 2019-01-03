@@ -1,8 +1,8 @@
-# README.md
 ![chronos-logo](https://i.imgur.com/yWR0afJ.png)
 
 [![chronos](https://img.shields.io/badge/chronos-%F0%9F%95%B0-blue.svg)](https://chronos-project.github.io)
 ![chronos version](https://img.shields.io/badge/version-0.9.0--beta-orange.svg)
+![license](https://img.shields.io/badge/license-MIT-green.svg)
 ## Overview
 Chronos is an event-capturing framework for greenfield applications and is built with NodeJS, Apache Kafka, TimescaleDB, and PipelineDB. This repository contians the data pipeline itself that is set up on a host server to store your event data for further analysis. Data can then be visualized using Grafana.
 
