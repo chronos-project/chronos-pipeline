@@ -1,0 +1,12 @@
+{
+  "name": "chronos-consumer",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node consumer"
+  },
+  "dependencies": {
+    "pg": "^7.7.1",
+    "sinek": "^6.23.4"
+  }
+}

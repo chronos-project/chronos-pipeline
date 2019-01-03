@@ -1,1 +1,5 @@
 node_modules/
+db/timescale/*
+!db/timescale/.gitignore
+db/pipeline/*
+!db/pipeline/.gitignore

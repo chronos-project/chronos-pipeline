@@ -3,12 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
-    "start-ts": "PGDATABASE=chronos_ts node workers/worker",
-    "start-pl": "PGDATABASE=chronos_pl node workers/worker"
+    "dev": "nodemon ./bin/www",
+    "start": "node app",
+    "add_new_allowed_origin": "node ./scripts/add_new_allowed_origin",
+    "generate_new_access_key": "node ./scripts/generate_access_key",
+    "remove_allowed_origin": "node ./scripts/remove_allowed_origin"
   },
   "dependencies": {
-    "amqplib": "^0.5.2",
     "bluebird": "^3.5.3",
     "body-parser": "^1.18.3",
     "cookie-parser": "~1.4.3",
@@ -16,7 +17,7 @@
     "debug": "~2.6.9",
     "dotenv": "^6.1.0",
     "express": "~4.16.0",
-    "moment": "^2.22.2",
+    "json-beautify": "^1.0.1",
     "morgan": "~1.9.0",
     "nodemon": "^1.18.5",
     "path": "^0.12.7",

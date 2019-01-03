@@ -1,0 +1,116 @@
+version: '3'
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    volumes:
+      - zk-data:/var/lib/zookeeper/data
+      - zk-txn-logs:/var/lib/zookeeper/log
+
+  kafka-1:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-1:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    volumes:
+      - kafka1-data:/var/lib/kafka/data
+
+  kafka-2:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 2
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-2:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    volumes:
+      - kafka2-data:/var/lib/kafka/data
+
+  kafka-3:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 3
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-3:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    volumes:
+      - kafka3-data:/var/lib/kafka/data
+
+  timescale:
+      image: 'timescale/timescaledb:latest-pg10'
+      environment:
+        - POSTGRES_DB=chronos_ts
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres_password
+      volumes:
+        - ./db/setup_timescale.sql:/docker-entrypoint-initdb.d/setup_timescale.sql
+        - timescale-data:/var/lib/postgresql/data
+
+  pipeline:
+    image: "pipelinedb/pipelinedb-postgresql-10:latest"
+    environment:
+      - POSTGRES_DB=chronos_pl
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres_password
+    volumes:
+      # - ./db/setup_pipelinedb.sql:/setup_pipelinedb.sql
+      - pipeline-data:/var/lib/postgresql/data
+
+  grafana:
+    image: "grafana/grafana:5.4.1"
+    ports:
+      - "4000:3000"
+    user: "472"
+    volumes:
+      - "grafana-data:/var/lib/grafana"
+
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: ./server
+    volumes:
+      - /app/node_modules
+      - ./server:/app
+    ports:
+      - "3000:3000"
+
+  consumer:
+    environment:
+      - PGUSER=postgres
+      - TSHOST=timescale
+      - TSDATABASE=chronos_ts
+      - PLHOST=pipeline
+      - PLDATABASE=chronos_pl
+      - PGPASSWORD=postgres_password
+      - PGPORT=5432
+    build:
+      dockerfile: Dockerfile
+      context: ./consumer
+    volumes:
+      - /app/node_modules
+      - ./consumer:/app
+
+volumes:
+  grafana-data:
+  zk-data:
+  zk-txn-logs:
+  kafka1-data:
+  kafka2-data:
+  kafka3-data:
+  timescale-data:
+  pipeline-data:
