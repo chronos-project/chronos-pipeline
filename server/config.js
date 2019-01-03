@@ -10,7 +10,7 @@ if (configFileContents.trim() === '') {
 
 try {
   config = JSON.parse(configFileContents);
-} catch {
+} catch(e) {
   console.log('Invalid JSON in config.json; resetting configuration')
   config = {};
 }

@@ -81,7 +81,7 @@ services:
 
   api:
     build:
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
       context: ./server
     volumes:
       - /app/node_modules
@@ -99,7 +99,7 @@ services:
       - PGPASSWORD=postgres_password
       - PGPORT=5432
     build:
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
       context: ./consumer
     volumes:
       - /app/node_modules
